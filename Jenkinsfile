@@ -52,14 +52,15 @@ pipeline {
 		stage("Build and Push Docker image") {
 		    steps {
 		        script {
-		            def fullImageName = "${IMAGE_NAME}:${IMAGE_TAG}"
+		            def versionedImage = "${IMAGE_NAME}:${IMAGE_TAG}"
+		            def latestImage = "${IMAGE_NAME}:latest"
 		
 		            docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
 		
-		                def docker_image = docker.build(fullImageName)
-		
-		                docker_image.push()
-		                docker_image.push("latest")
+		                sh "docker build -t ${versionedImage} ."
+		                sh "docker tag ${versionedImage} ${latestImage}"
+		                sh "docker push ${versionedImage}"
+		                sh "docker push ${latestImage}"
 		            }
 		        }
 		    }
