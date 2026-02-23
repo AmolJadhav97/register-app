@@ -51,8 +51,10 @@ pipeline {
 		}
 		stage("Debug Image Vars") {
 		    steps {
-		        sh 'echo IMAGE_NAME=$IMAGE_NAME'
-		        sh 'echo IMAGE_TAG=$IMAGE_TAG'
+				script {
+			        sh 'echo IMAGE_NAME=$IMAGE_NAME'
+			        sh 'echo IMAGE_TAG=$IMAGE_TAG'
+			    }
 		    }
 		}
 		stage("Build and Push Docker image") {
