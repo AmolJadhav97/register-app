@@ -49,19 +49,20 @@ pipeline {
 				}
 			}
 		}
-		stage("Build and Push Docker image"){
-			steps {
-				script {
-					docker.withRegistry('',DOCKER_PASS) {
-						docker_image = docker.build "${IMAGE_NAME}"
-					}
-					docker.withRegistry('',DOCKER_PASS) {
-						docker_image.push("${IMAGE_TAG}")
-						docker_image.push('latest')
-					}
-
-				}
-			}
+		stage("Build and Push Docker image") {
+		    steps {
+		        script {
+		            def fullImageName = "${IMAGE_NAME}:${IMAGE_TAG}"
+		
+		            docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
+		
+		                def docker_image = docker.build(fullImageName)
+		
+		                docker_image.push()
+		                docker_image.push("latest")
+		            }
+		        }
+		    }
 		}
 			
 	}
