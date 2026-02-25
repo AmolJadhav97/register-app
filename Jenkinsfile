@@ -82,8 +82,6 @@ pipeline {
 		                sh "docker rmi ${latestImage}"
 		            }
 				}
-			}		
-		}
-			
+			}					
 	}
 }
