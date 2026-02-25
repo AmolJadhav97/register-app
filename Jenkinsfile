@@ -49,14 +49,6 @@ pipeline {
 				}
 			}
 		}
-		stage("Debug Image Vars") {
-		    steps {
-				script {
-			        sh 'echo IMAGE_NAME=$IMAGE_NAME'
-			        sh 'echo IMAGE_TAG=$IMAGE_TAG'
-			    }
-		    }
-		}
 		stage("Build and Push Docker image") {
 		    steps {
 		        script {
@@ -72,6 +64,25 @@ pipeline {
 		            }
 		        }
 		    }
+		}
+		stage("Trivy Scan") {
+			steps {
+				script {
+					sh ('docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image amoljadhav1997/register-app-pipeline:latest --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table')
+				}
+			}
+		}
+		stage ("Cleanup artifact") {
+			steps {
+				script {
+					def versionedImage = "${IMAGE_NAME}:${IMAGE_TAG}"
+		            def latestImage = "${IMAGE_NAME}:latest" 
+					
+		                sh "docker rmi ${versionedImage}"
+		                sh "docker rmi ${latestImage}"
+		            }
+				}
+			}		
 		}
 			
 	}
