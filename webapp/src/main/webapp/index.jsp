@@ -157,8 +157,8 @@
     <div class="main-container">
         <form action="action_page.php" class="form-container">
             <div class="container">
-                <h1>Register for Amol's DevOps Learning</h1>
-                <p>Virtual TechBox Youtube Channel</p>
+                <h1>Register for DevOps Hands on Practice</h1>
+                <p>Amol's collab for DevOps Project</p>
                 <p>Please fill in this form to create an account.</p>
                 <hr>
 
